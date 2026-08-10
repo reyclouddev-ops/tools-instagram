@@ -5,6 +5,24 @@ const platformResult = document.getElementById("platformResult");
 const content = document.getElementById("content");
 const statusText = document.getElementById("status");
 
+const platformPicker = document.getElementById("platformPicker");
+const reasonPicker = document.getElementById("reasonPicker");
+
+const platformInput = document.getElementById("platform");
+const reasonInput = document.getElementById("reason");
+
+const platformTitle = document.getElementById("platformTitle");
+const platformSub = document.getElementById("platformSub");
+
+const reasonTitle = document.getElementById("reasonTitle");
+const reasonSub = document.getElementById("reasonSub");
+
+const pickerOverlay = document.getElementById("pickerOverlay");
+const sheetTitle = document.getElementById("sheetTitle");
+const sheetSubtitle = document.getElementById("sheetSubtitle");
+const pickerOptions = document.getElementById("pickerOptions");
+const closePicker = document.getElementById("closePicker");
+
 const evidence = document.getElementById("evidence");
 const previewBox = document.getElementById("previewBox");
 const previewImage = document.getElementById("previewImage");
@@ -16,6 +34,138 @@ const emailButton = document.getElementById("emailButton");
 
 let reviewData = null;
 let imageUrl = null;
+let activePicker = null;
+
+const platforms = [
+  {
+    value: "android",
+    icon: "🤖",
+    title: "Android",
+    sub: "Aplikasi Instagram"
+  },
+  {
+    value: "ios",
+    icon: "",
+    title: "iPhone / iOS",
+    sub: "Aplikasi Instagram"
+  },
+  {
+    value: "web",
+    icon: "🌐",
+    title: "Web / Browser",
+    sub: "Instagram melalui browser"
+  }
+];
+
+const reasons = [
+  {
+    value: "disabled",
+    icon: "🔒",
+    title: "Akun Dinonaktifkan",
+    sub: "Account disabled"
+  },
+  {
+    value: "suspended",
+    icon: "⛔",
+    title: "Akun Ditangguhkan",
+    sub: "Account suspended"
+  },
+  {
+    value: "login",
+    icon: "🔑",
+    title: "Tidak Bisa Login",
+    sub: "Mengalami masalah saat login"
+  },
+  {
+    value: "other",
+    icon: "💬",
+    title: "Masalah Lainnya",
+    sub: "Masalah akun lainnya"
+  }
+];
+
+function openPicker(type) {
+  activePicker = type;
+
+  const data = type === "platform" ? platforms : reasons;
+
+  sheetTitle.textContent =
+    type === "platform" ? "Pilih Perangkat" : "Masalah Akun";
+
+  sheetSubtitle.textContent =
+    type === "platform"
+      ? "Pilih perangkat yang digunakan"
+      : "Pilih kondisi akun kamu";
+
+  pickerOptions.innerHTML = "";
+
+  data.forEach(item => {
+    const button = document.createElement("button");
+
+    button.type = "button";
+    button.className = "option";
+
+    const currentValue =
+      type === "platform"
+        ? platformInput.value
+        : reasonInput.value;
+
+    if (currentValue === item.value) {
+      button.classList.add("selected");
+    }
+
+    button.innerHTML = `
+      <span class="option-icon">${item.icon}</span>
+      <span class="option-info">
+        <strong>${item.title}</strong>
+        <small>${item.sub}</small>
+      </span>
+    `;
+
+    button.addEventListener("click", () => {
+      selectOption(type, item);
+    });
+
+    pickerOptions.appendChild(button);
+  });
+
+  pickerOverlay.classList.remove("hidden");
+}
+
+function selectOption(type, item) {
+  if (type === "platform") {
+    platformInput.value = item.value;
+    platformTitle.textContent = item.title;
+    platformSub.textContent = item.sub;
+  } else {
+    reasonInput.value = item.value;
+    reasonTitle.textContent = item.title;
+    reasonSub.textContent = item.sub;
+  }
+
+  closePickerModal();
+}
+
+function closePickerModal() {
+  pickerOverlay.classList.add("hidden");
+  activePicker = null;
+}
+
+platformPicker.addEventListener("click", () => {
+  openPicker("platform");
+});
+
+reasonPicker.addEventListener("click", () => {
+  openPicker("reason");
+});
+
+closePicker.addEventListener("click", closePickerModal);
+
+pickerOverlay.addEventListener("click", event => {
+  if (event.target === pickerOverlay) {
+    closePickerModal();
+  }
+});
 
 evidence.addEventListener("change", () => {
   const file = evidence.files[0];
@@ -30,7 +180,7 @@ evidence.addEventListener("change", () => {
 
   if (!allowedTypes.includes(file.type)) {
     evidence.value = "";
-    statusText.textContent = "Format foto harus JPG, PNG, JPEG atau WEBP.";
+    statusText.textContent = "Format foto tidak didukung.";
     return;
   }
 
@@ -49,6 +199,7 @@ evidence.addEventListener("change", () => {
   previewImage.src = imageUrl;
   fileName.textContent = file.name;
   previewBox.classList.remove("hidden");
+
   statusText.textContent = "Foto siap dilampirkan.";
 });
 
@@ -63,19 +214,30 @@ removeImage.addEventListener("click", () => {
   previewImage.removeAttribute("src");
   fileName.textContent = "";
   previewBox.classList.add("hidden");
+
   statusText.textContent = "Foto dihapus.";
 });
 
 form.addEventListener("submit", async event => {
   event.preventDefault();
 
-  statusText.textContent = "Membuat permohonan...";
-  result.classList.add("hidden");
-
   const username = document.getElementById("username").value.trim();
   const email = document.getElementById("email").value.trim();
-  const platform = document.getElementById("platform").value;
-  const reason = document.getElementById("reason").value;
+
+  if (!platformInput.value) {
+    statusText.textContent = "Silakan pilih perangkat.";
+    openPicker("platform");
+    return;
+  }
+
+  if (!reasonInput.value) {
+    statusText.textContent = "Silakan pilih masalah akun.";
+    openPicker("reason");
+    return;
+  }
+
+  statusText.textContent = "Membuat permohonan...";
+  result.classList.add("hidden");
 
   try {
     const response = await fetch("/api/review", {
@@ -86,8 +248,8 @@ form.addEventListener("submit", async event => {
       body: JSON.stringify({
         username,
         email,
-        platform,
-        reason
+        platform: platformInput.value,
+        reason: reasonInput.value
       })
     });
 
@@ -104,6 +266,7 @@ form.addEventListener("submit", async event => {
     content.value = reviewData.content;
 
     result.classList.remove("hidden");
+
     statusText.textContent = "Permohonan berhasil dibuat.";
   } catch (error) {
     statusText.textContent = error.message;
