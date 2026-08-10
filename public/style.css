@@ -10,22 +10,22 @@ body {
   background: #09090f;
   color: #fff;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   padding: 20px;
 }
 
 .container {
   width: 100%;
-  max-width: 520px;
+  max-width: 540px;
 }
 
 .card {
   background: #11111a;
   border: 1px solid #292936;
-  border-radius: 22px;
+  border-radius: 24px;
   padding: 28px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, .35);
+  box-shadow: 0 20px 70px rgba(0, 0, 0, .4);
 }
 
 .brand {
@@ -36,25 +36,40 @@ body {
 }
 
 .logo {
-  width: 52px;
-  height: 52px;
-  border-radius: 15px;
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  background: #fff;
+  color: #000;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fff;
-  color: #000;
-  font-size: 25px;
+  font-size: 26px;
   font-weight: 800;
 }
 
 .brand h1 {
-  font-size: 24px;
+  font-size: 25px;
 }
 
 .brand p {
-  color: #9292a3;
+  color: #90909f;
   margin-top: 4px;
+}
+
+.intro {
+  margin-bottom: 24px;
+}
+
+.intro h2 {
+  font-size: 20px;
+  margin-bottom: 7px;
+}
+
+.intro p {
+  color: #9292a3;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 form {
@@ -63,20 +78,20 @@ form {
 }
 
 label {
-  color: #cfcfd8;
+  color: #d0d0d8;
   font-size: 14px;
-  margin-top: 8px;
+  margin-top: 7px;
 }
 
 input,
 select,
 textarea {
   width: 100%;
-  border: 1px solid #2c2c38;
+  border: 1px solid #2d2d3a;
   background: #0b0b12;
   color: #fff;
-  border-radius: 12px;
-  padding: 13px;
+  border-radius: 13px;
+  padding: 14px;
   outline: none;
   font-size: 14px;
 }
@@ -87,41 +102,193 @@ textarea:focus {
   border-color: #fff;
 }
 
-button {
+.upload-box {
+  position: relative;
+}
+
+.upload-box input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.upload-label {
+  min-height: 120px;
+  border: 1px dashed #41414f;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  cursor: pointer;
+  background: #0b0b12;
+  margin: 0;
+}
+
+.upload-label:hover {
+  border-color: #fff;
+}
+
+.upload-icon {
+  font-size: 30px;
+}
+
+.upload-label strong {
+  color: #fff;
+}
+
+.upload-label small {
+  color: #777786;
+  font-size: 12px;
+}
+
+.main-button {
+  width: 100%;
+  border: 0;
+  border-radius: 13px;
+  padding: 15px;
+  margin-top: 14px;
+  background: #fff;
+  color: #000;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.main-button:hover {
+  opacity: .9;
+}
+
+.preview {
+  margin-top: 15px;
+  padding: 14px;
+  border: 1px solid #292936;
+  border-radius: 15px;
+  background: #0b0b12;
+}
+
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  color: #ccc;
+  font-size: 14px;
+}
+
+#removeImage {
+  border: 0;
+  background: transparent;
+  color: #ff7777;
+  cursor: pointer;
+}
+
+#previewImage {
+  width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  border-radius: 10px;
+  background: #050509;
+}
+
+#fileName {
+  color: #777786;
+  font-size: 12px;
+  margin-top: 8px;
+  word-break: break-all;
+}
+
+.result {
+  margin-top: 28px;
+  padding-top: 26px;
+  border-top: 1px solid #292936;
+}
+
+.success-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #fff;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.result h2 {
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+
+#subject,
+#platformResult {
+  color: #aaaaba;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+textarea {
+  min-height: 290px;
+  resize: vertical;
+  line-height: 1.55;
+  margin-top: 8px;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.actions button {
   border: 0;
   border-radius: 12px;
   padding: 14px;
-  margin-top: 12px;
+  margin-top: 10px;
   background: #fff;
   color: #000;
   font-weight: 700;
   cursor: pointer;
 }
 
-button:hover {
-  opacity: .9;
+.email-guide {
+  margin-top: 18px;
+  padding: 16px;
+  border: 1px solid #3a3a48;
+  border-radius: 15px;
+  background: #0b0b12;
 }
 
-.result {
-  margin-top: 25px;
-  padding-top: 25px;
-  border-top: 1px solid #292936;
+.guide-title {
+  font-weight: 700;
+  margin-bottom: 9px;
 }
 
-.result h2 {
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-#subject {
+.email-guide p {
   color: #aaaaba;
+  font-size: 13px;
+  line-height: 1.5;
   margin-bottom: 10px;
 }
 
-textarea {
-  min-height: 280px;
-  resize: vertical;
+.email-guide ol {
+  padding-left: 20px;
+  color: #c9c9d2;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.email-guide small {
+  display: block;
+  color: #777786;
+  font-size: 11px;
   line-height: 1.5;
+  margin-top: 12px;
 }
 
 .hidden {
@@ -132,5 +299,15 @@ textarea {
   text-align: center;
   color: #aaaaba;
   margin-top: 16px;
-  font-size: 14px;
+  font-size: 13px;
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 21px;
+  }
+
+  .actions {
+    grid-template-columns: 1fr;
+  }
 }
