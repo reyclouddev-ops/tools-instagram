@@ -125,13 +125,12 @@ copyButton.addEventListener("click", async () => {
 emailButton.addEventListener("click", () => {
   if (!reviewData) return;
 
-  const mailto = [
-    "mailto:",
-    "?subject=",
-    encodeURIComponent(reviewData.subject),
-    "&body=",
-    encodeURIComponent(reviewData.content)
-  ].join("");
+  const targetEmail = "instagram-android@meta.com";
+
+  const mailto =
+    `mailto:${targetEmail}` +
+    `?subject=${encodeURIComponent(reviewData.subject)}` +
+    `&body=${encodeURIComponent(reviewData.content)}`;
 
   window.location.href = mailto;
 
