@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ReyCloud Instagram Account Review Tool">
   <title>ReyCloud IG Review</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body>
   <main class="container">
@@ -17,14 +18,45 @@
         </div>
       </div>
 
+      <div class="intro">
+        <h2>Tinjau Akun Instagram</h2>
+        <p>
+          Isi informasi akun dengan benar untuk membuat permohonan tinjauan.
+        </p>
+      </div>
+
       <form id="reviewForm">
-        <label>Username Instagram</label>
-        <input id="username" type="text" placeholder="@username" required>
+        <label for="username">Username Instagram</label>
 
-        <label>Email Akun Instagram</label>
-        <input id="email" type="email" placeholder="email@example.com" required>
+        <input
+          id="username"
+          type="text"
+          placeholder="@username"
+          autocomplete="off"
+          required
+        >
 
-        <label>Masalah Akun</label>
+        <label for="email">Email Akun Instagram</label>
+
+        <input
+          id="email"
+          type="email"
+          placeholder="email@example.com"
+          autocomplete="email"
+          required
+        >
+
+        <label for="platform">Perangkat</label>
+
+        <select id="platform" required>
+          <option value="">Pilih perangkat</option>
+          <option value="android">Android</option>
+          <option value="ios">iPhone / iOS</option>
+          <option value="web">Web / Browser</option>
+        </select>
+
+        <label for="reason">Masalah Akun</label>
+
         <select id="reason" required>
           <option value="">Pilih masalah</option>
           <option value="disabled">Account Disabled</option>
@@ -33,20 +65,85 @@
           <option value="other">Other</option>
         </select>
 
-        <button type="submit">Buat Permohonan</button>
+        <label for="evidence">Foto / Screenshot Kejadian</label>
+
+        <div class="upload-box">
+          <input
+            id="evidence"
+            type="file"
+            accept="image/png,image/jpeg,image/webp"
+          >
+
+          <label for="evidence" class="upload-label">
+            <span class="upload-icon">📷</span>
+            <strong>Pilih Foto</strong>
+            <small>PNG, JPG, JPEG atau WEBP • Maks. 5 MB</small>
+          </label>
+        </div>
+
+        <div id="previewBox" class="preview hidden">
+          <div class="preview-header">
+            <span>Preview Foto</span>
+            <button id="removeImage" type="button">Hapus</button>
+          </div>
+
+          <img id="previewImage" alt="Preview foto kejadian">
+          <p id="fileName"></p>
+        </div>
+
+        <button class="main-button" type="submit">
+          Buat Permohonan
+        </button>
       </form>
 
       <div id="result" class="result hidden">
-        <h2>Preview Permohonan</h2>
+        <div class="success-icon">✓</div>
+
+        <h2>Permohonan Siap</h2>
+
         <p id="subject"></p>
+        <p id="platformResult"></p>
+
         <textarea id="content" readonly></textarea>
-        <button id="copyButton">Copy Permohonan</button>
+
+        <div class="actions">
+          <button id="copyButton" type="button">
+            📋 Copy Teks
+          </button>
+
+          <button id="emailButton" type="button">
+            📧 Kirim via Email
+          </button>
+        </div>
+
+        <div class="email-guide">
+          <div class="guide-title">
+            ⚠️ Jangan kirim email dulu
+          </div>
+
+          <p>
+            Setelah aplikasi email terbuka, ikuti langkah berikut:
+          </p>
+
+          <ol>
+            <li>Klik ikon <strong>📎 Lampiran</strong>.</li>
+            <li>Pilih foto atau screenshot kejadian.</li>
+            <li>Pastikan foto sudah berhasil terlampir.</li>
+            <li>Periksa kembali isi email.</li>
+            <li>Setelah semuanya benar, baru tekan <strong>Send</strong>.</li>
+          </ol>
+
+          <small>
+            Foto yang dipilih di website tidak dikirim ke server.
+            Lampirkan foto langsung melalui aplikasi email kamu.
+          </small>
+        </div>
       </div>
 
       <p id="status"></p>
     </section>
   </main>
 
-  <script src="script.js"></script>
+  <script src="/script.js"></script>
 </body>
 </html>
