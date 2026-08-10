@@ -1,9 +1,70 @@
 const form = document.getElementById("reviewForm");
 const result = document.getElementById("result");
 const subject = document.getElementById("subject");
+const platformResult = document.getElementById("platformResult");
 const content = document.getElementById("content");
 const statusText = document.getElementById("status");
+
+const evidence = document.getElementById("evidence");
+const previewBox = document.getElementById("previewBox");
+const previewImage = document.getElementById("previewImage");
+const fileName = document.getElementById("fileName");
+const removeImage = document.getElementById("removeImage");
+
 const copyButton = document.getElementById("copyButton");
+const emailButton = document.getElementById("emailButton");
+
+let reviewData = null;
+let imageUrl = null;
+
+evidence.addEventListener("change", () => {
+  const file = evidence.files[0];
+
+  if (!file) return;
+
+  const allowedTypes = [
+    "image/jpeg",
+    "image/png",
+    "image/webp"
+  ];
+
+  if (!allowedTypes.includes(file.type)) {
+    evidence.value = "";
+    statusText.textContent = "Format foto harus JPG, PNG, JPEG atau WEBP.";
+    return;
+  }
+
+  if (file.size > 5 * 1024 * 1024) {
+    evidence.value = "";
+    statusText.textContent = "Ukuran foto maksimal 5 MB.";
+    return;
+  }
+
+  if (imageUrl) {
+    URL.revokeObjectURL(imageUrl);
+  }
+
+  imageUrl = URL.createObjectURL(file);
+
+  previewImage.src = imageUrl;
+  fileName.textContent = file.name;
+  previewBox.classList.remove("hidden");
+  statusText.textContent = "Foto siap dilampirkan.";
+});
+
+removeImage.addEventListener("click", () => {
+  evidence.value = "";
+
+  if (imageUrl) {
+    URL.revokeObjectURL(imageUrl);
+    imageUrl = null;
+  }
+
+  previewImage.removeAttribute("src");
+  fileName.textContent = "";
+  previewBox.classList.add("hidden");
+  statusText.textContent = "Foto dihapus.";
+});
 
 form.addEventListener("submit", async event => {
   event.preventDefault();
@@ -11,8 +72,9 @@ form.addEventListener("submit", async event => {
   statusText.textContent = "Membuat permohonan...";
   result.classList.add("hidden");
 
-  const username = document.getElementById("username").value.trim().replace(/^@/, "");
+  const username = document.getElementById("username").value.trim();
   const email = document.getElementById("email").value.trim();
+  const platform = document.getElementById("platform").value;
   const reason = document.getElementById("reason").value;
 
   try {
@@ -24,6 +86,7 @@ form.addEventListener("submit", async event => {
       body: JSON.stringify({
         username,
         email,
+        platform,
         reason
       })
     });
@@ -34,8 +97,11 @@ form.addEventListener("submit", async event => {
       throw new Error(data.message || "Gagal membuat permohonan.");
     }
 
-    subject.textContent = `Subject: ${data.data.subject}`;
-    content.value = data.data.content;
+    reviewData = data.data;
+
+    subject.textContent = `Subject: ${reviewData.subject}`;
+    platformResult.textContent = `Platform: ${reviewData.platform}`;
+    content.value = reviewData.content;
 
     result.classList.remove("hidden");
     statusText.textContent = "Permohonan berhasil dibuat.";
@@ -45,10 +111,29 @@ form.addEventListener("submit", async event => {
 });
 
 copyButton.addEventListener("click", async () => {
-  await navigator.clipboard.writeText(content.value);
-  copyButton.textContent = "Copied!";
+  if (!reviewData) return;
+
+  await navigator.clipboard.writeText(reviewData.content);
+
+  copyButton.textContent = "✓ Tersalin";
 
   setTimeout(() => {
-    copyButton.textContent = "Copy Permohonan";
+    copyButton.textContent = "📋 Copy Teks";
   }, 1500);
+});
+
+emailButton.addEventListener("click", () => {
+  if (!reviewData) return;
+
+  const mailto = [
+    "mailto:",
+    "?subject=",
+    encodeURIComponent(reviewData.subject),
+    "&body=",
+    encodeURIComponent(reviewData.content)
+  ].join("");
+
+  window.location.href = mailto;
+
+  statusText.textContent = "Aplikasi email sedang dibuka.";
 });
