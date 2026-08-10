@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReyCloud IG Review</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="container">
+    <section class="card">
+      <div class="brand">
+        <div class="logo">R</div>
+        <div>
+          <h1>ReyCloud</h1>
+          <p>Instagram Account Review</p>
+        </div>
+      </div>
+
+      <form id="reviewForm">
+        <label>Username Instagram</label>
+        <input id="username" type="text" placeholder="@username" required>
+
+        <label>Email Akun Instagram</label>
+        <input id="email" type="email" placeholder="email@example.com" required>
+
+        <label>Masalah Akun</label>
+        <select id="reason" required>
+          <option value="">Pilih masalah</option>
+          <option value="disabled">Account Disabled</option>
+          <option value="suspended">Account Suspended</option>
+          <option value="login">Login Issue</option>
+          <option value="other">Other</option>
+        </select>
+
+        <button type="submit">Buat Permohonan</button>
+      </form>
+
+      <div id="result" class="result hidden">
+        <h2>Preview Permohonan</h2>
+        <p id="subject"></p>
+        <textarea id="content" readonly></textarea>
+        <button id="copyButton">Copy Permohonan</button>
+      </div>
+
+      <p id="status"></p>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
