@@ -1,0 +1,14 @@
+{
+  "name": "reycloud-ig-review",
+  "version": "1.0.0",
+  "description": "ReyCloud Instagram Account Review",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0"
+  }
+}
